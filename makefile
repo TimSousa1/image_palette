@@ -9,12 +9,18 @@ ifdef DEBUG
 	CFLAGS = -ggdb -D DEBUG
 endif
 
+LIBS = -lm
+
+ifdef VISUALIZE
+	CFLAGS += -D VISUALIZE
+	LIBS += $(shell pkg-config --libs raylib)
+endif
+
 CFLAGS += -Wall -Wextra
 
 SRC := $(shell find . -name '*.c')
 OBJ := $(SRC:%.c=%.o)
 DEPS := $(shell find . -name '*.h')
-LIBS := $(shell pkg-config --libs raylib) -lm
 OUT_NAME := km
 
 %.o : %.c $(DEPS)

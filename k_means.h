@@ -25,19 +25,22 @@ int gen_data(size_d_tim_ *arr, int n, int dim, size_d_tim_ *range);
 int gen_cents(size_d_tim_ *data, int n, size_d_tim_ *m, int k,  int dim);
 
 int print_data(size_d_tim_ *arr, int *sets, int n, int dim);
+
+#ifdef T_K_MEANS_RAYLIB_VISUALIZATION
 // colors is the color of each set
 int draw_data(size_d_tim_ *arr, int *sets, int n, int dim, Color *colors);
+int draw_cents(size_d_tim_ *arr, int n, int dim, Color *colors);
+// generate random 'n' colors
+int gen_colors(Color *colors, int n);
+#endif
 
 int print_cents(size_d_tim_ *arr, int n, int dim);
-int draw_cents(size_d_tim_ *arr, int n, int dim, Color *colors);
 
 // set points' sets
 int k_means(size_d_tim_ *arr, int *sets, int n, size_d_tim_ *m, int k, int dim);
 // get new centroids
 int k_means_adjust(size_d_tim_ *arr, int *sets, int n, size_d_tim_ *m, int k, int dim);
 
-// generate random 'n' colors
-int gen_colors(Color *colors, int n);
 #endif
 
 #ifdef T_K_MEANS_IMPL
@@ -86,18 +89,6 @@ int print_cents(size_d_tim_ *m, int k, int dim) {
 }
 
 
-int draw_cents(size_d_tim_ *arr, int n, int dim, Color *colors) {
-    if (dim != 2) return -1;
-
-    for (int i = 0; i < n; i++) {
-        DrawCircle(arr[0], arr[1], K_RADIUS, colors[i]);
-        arr += dim;
-    }
-
-    return 0;
-}
-
-
 int print_data(size_d_tim_ *arr, int *sets, int n, int dim) {
     printf("data:\n");
     for (int i = 0; i < n; i++) {
@@ -107,18 +98,6 @@ int print_data(size_d_tim_ *arr, int *sets, int n, int dim) {
             printf("%d, ", arr[j]);
         }
         printf("%d | %d]\n", arr[dim-1], sets[i]);
-        arr += dim;
-    }
-
-    return 0;
-}
-
-
-int draw_data(size_d_tim_ *arr, int *sets, int n, int dim, Color *colors) {
-    if (dim != 2) return -1;
-
-    for (int i = 0; i < n; i++) {
-        DrawCircle(arr[0], arr[1], D_RADIUS, colors[sets[i]]);
         arr += dim;
     }
 
@@ -199,6 +178,29 @@ int k_means_adjust(size_d_tim_ *arr, int *sets, int n, size_d_tim_ *m, int k, in
 }
 
 
+#ifdef T_K_MEANS_RAYLIB_VISUALIZATION
+int draw_data(size_d_tim_ *arr, int *sets, int n, int dim, Color *colors) {
+    if (dim != 2) return -1;
+
+    for (int i = 0; i < n; i++) {
+        DrawCircle(arr[0], arr[1], D_RADIUS, colors[sets[i]]);
+        arr += dim;
+    }
+
+    return 0;
+}
+
+int draw_cents(size_d_tim_ *arr, int n, int dim, Color *colors) {
+    if (dim != 2) return -1;
+
+    for (int i = 0; i < n; i++) {
+        DrawCircle(arr[0], arr[1], K_RADIUS, colors[i]);
+        arr += dim;
+    }
+
+    return 0;
+}
+
 int gen_colors(Color *colors, int n) {
     if (!colors) return -1;
 
@@ -211,5 +213,6 @@ int gen_colors(Color *colors, int n) {
 
     return 0;
 }
+#endif
 
 #endif
