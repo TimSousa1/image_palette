@@ -130,6 +130,8 @@ int main(int argc, char **argv) {
         if (IsKeyPressed(KEY_SPACE)) iteration = 1;
         else iteration = 0;
     }
+
+    CloseWindow();
 #endif
 
     modify_data(data, sets, width*height, centroids, n_channels);
