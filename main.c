@@ -39,7 +39,8 @@ Texture2D draw_image(u_char *data, int width, int height);
 
 int main(int argc, char **argv) {
     char *in = NULL, *out = NULL;
-    int opt, k = 0;
+    int opt;
+    uint64_t k;
 
     while ((opt = getopt(argc, argv, "i:o:k:")) != -1) {
         switch (opt) {
@@ -52,7 +53,11 @@ int main(int argc, char **argv) {
                 break;
 
             case 'k':
-                k = atoi(optarg);
+                if (atoi(optarg) < 0) {
+                    perror("K must be a positive value!\n");
+                    return -1;
+                }
+                k = (uint64_t) strtoul(optarg, 0, 10);
                 break;
 
             default:
@@ -65,6 +70,7 @@ int main(int argc, char **argv) {
     if (!out) out = "out.png";
 
     if (!k) k = K;
+    if (k > UINT_MAX) return -1;
 
     int width, height, n_channels;
 
@@ -74,9 +80,6 @@ int main(int argc, char **argv) {
         stbi_failure_reason();
         return -1;
     }
-
-//    printf("got image (%dx%d), %d!\n", width, height, n_channels);
-
 
     int *sets = malloc(width*height * sizeof(*sets));
     assert(sets);

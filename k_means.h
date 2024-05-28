@@ -1,3 +1,6 @@
+// define MY_T_K_MEANS_SIZE_IMPL to use data of any size (default is int if undefined)
+// define T_K_MEANS_IMPL to include all implementations
+
 #ifndef T_K_MEANS_H
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,15 +28,6 @@ int gen_data(size_d_tim_ *arr, int n, int dim, size_d_tim_ *range);
 int gen_cents(size_d_tim_ *data, int n, size_d_tim_ *m, int k,  int dim);
 
 int print_data(size_d_tim_ *arr, int *sets, int n, int dim);
-
-#ifdef T_K_MEANS_RAYLIB_VISUALIZATION
-// colors is the color of each set
-int draw_data(size_d_tim_ *arr, int *sets, int n, int dim, Color *colors);
-int draw_cents(size_d_tim_ *arr, int n, int dim, Color *colors);
-// generate random 'n' colors
-int gen_colors(Color *colors, int n);
-#endif
-
 int print_cents(size_d_tim_ *arr, int n, int dim);
 
 // set points' sets
@@ -176,43 +170,5 @@ int k_means_adjust(size_d_tim_ *arr, int *sets, int n, size_d_tim_ *m, int k, in
 
     return eq;
 }
-
-
-#ifdef T_K_MEANS_RAYLIB_VISUALIZATION
-int draw_data(size_d_tim_ *arr, int *sets, int n, int dim, Color *colors) {
-    if (dim != 2) return -1;
-
-    for (int i = 0; i < n; i++) {
-        DrawCircle(arr[0], arr[1], D_RADIUS, colors[sets[i]]);
-        arr += dim;
-    }
-
-    return 0;
-}
-
-int draw_cents(size_d_tim_ *arr, int n, int dim, Color *colors) {
-    if (dim != 2) return -1;
-
-    for (int i = 0; i < n; i++) {
-        DrawCircle(arr[0], arr[1], K_RADIUS, colors[i]);
-        arr += dim;
-    }
-
-    return 0;
-}
-
-int gen_colors(Color *colors, int n) {
-    if (!colors) return -1;
-
-    for (int i = 0; i < n; i++) {
-        colors[i].r = rand() % 200 + 55;
-        colors[i].g = rand() % 200 + 55;
-        colors[i].b = rand() % 200 + 55;
-        colors[i].a = 255;
-    }
-
-    return 0;
-}
-#endif
 
 #endif
