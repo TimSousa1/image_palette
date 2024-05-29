@@ -40,7 +40,7 @@ Texture2D draw_image(u_char *data, int width, int height);
 int main(int argc, char **argv) {
     char *in = NULL, *out = NULL;
     int opt;
-    uint64_t k;
+    int k;
 
     while ((opt = getopt(argc, argv, "i:o:k:")) != -1) {
         switch (opt) {
@@ -61,16 +61,19 @@ int main(int argc, char **argv) {
                 break;
 
             default:
-                fprintf(stderr, "Usage: %s [-k nclusters] [-i] <input file>", argv[0]);
+                fprintf(stderr, "Usage: %s [-k nclusters] [-i] <input file> [-o <output file>]", argv[0]);
                 return -1;
         }
     }
 
-    if (!in) return -1;
-    if (!out) out = "out.png";
+    if (!in) {
+        fprintf(stderr, "Usage: %s [-k nclusters] [-i] <input file> [-o <output file>]", argv[0]);
+        return -1;
+    }
 
-    if (!k) k = K;
-    if (k > UINT_MAX) return -1;
+    // fallback to default values
+    if (!out) out = "out.png";
+    if (!k) k = K; 
 
     int width, height, n_channels;
 
